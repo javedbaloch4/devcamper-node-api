@@ -8,7 +8,7 @@ dotenv.config({ path: "./config/config.env" });
 const app = express();
 
 // Mount routes
-app.use("/api/v1/bootcamp", bootcamps);
+app.use("/api/v1/bootcamps", bootcamps);
 
 const PORT = process.env.PORT || 5000;
 
