@@ -1,10 +1,12 @@
+import Bootcamp from "../models/Bootcamp.js";
+
 /**
  * @desc Get all bootcamps
  * @route /api/v1/bootcamps
  * @access Public
  */
 export const getBootcamps = (req, res, next) => {
-  res.status(200).json({ success: true, message: "Show all the bootcamps" });
+  res.status(200).json({ success: true, message: "Show " });
 };
 
 /**
@@ -12,10 +14,13 @@ export const getBootcamps = (req, res, next) => {
  * @route POST /api/v1/bootcamp
  * @access Public
  */
-export const createBootcamp = (req, res, next) => {
-  res
-    .status(201)
-    .json({ success: true, message: "Bootcamp has been created " });
+export const createBootcamp = async (req, res, next) => {
+  try {
+    const bootcamp = await Bootcamp.create(req.body);
+    res.status(200).json({ success: true, data: bootcamp });
+  } catch (err) {
+    res.status(400).json({ success: false, error: err });
+  }
 };
 
 /**

@@ -13,12 +13,18 @@ Setup Postman Environment
   - Initial Value `http://localhost:5000`
   - How to use it - {{URL}}/api/v1/bootcamps
 - Create a New Collection
+
   - Name - DevCamper API
   - Description - BackendAPI for the ....
   - Create a folder inside collection
     - name - Bootcamps
     - description - All APIs Bootcamps
   - Create a request
+
     - name - Name of the request
     - description - Description of request...
+
+  - Additional Things
+    - Add Present for JSON Type for create route
+
 - ✨Magic ✨
