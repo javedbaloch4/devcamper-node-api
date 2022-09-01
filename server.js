@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/bootcamps", bootcamps);
 
 /**
- * todo: What if we add it above the routes.
+ * Todo: What if we add it above the routes.
  */
 app.use(errorHandler);
 

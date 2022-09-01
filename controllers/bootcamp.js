@@ -9,6 +9,9 @@ import ErrorResponse from "../utils/ErrorResponse.js";
 export const getBootcamps = async (req, res, next) => {
   try {
     const bootcamp = await Bootcamp.find();
+    // if (!bootcamp) {
+    //   return ErrorResponse(`Not bootcamps found`, 404);
+    // }
     res.status(200).json({ success: true, data: bootcamp });
   } catch (err) {
     res.status(400).json({ success: false, error: err });
@@ -46,9 +49,10 @@ export const showBootcamp = async (req, res, next) => {
   } catch (err) {
     // res.status(400).json({ success: false, error: err });
     // next(err);
-    next(
-      new ErrorResponse(`The bootcamp not found wiht id ${req.params.id}`, 400)
-    );
+    // next(
+    //   new ErrorResponse(`The bootcamp not found wiht id ${req.params.id}`, 400)
+    // );
+    next(err);
   }
 };
 
@@ -65,7 +69,9 @@ export const updateBootcamp = async (req, res, next) => {
     });
 
     if (!bootcamp) {
-      return res.status({ success: true, data: bootcamp });
+      return next(
+        new ErrorResponse(`The bootcamp not found wiht id ${req.params.id}`)
+      );
     }
 
     res.status(200).json({
@@ -74,7 +80,7 @@ export const updateBootcamp = async (req, res, next) => {
       data: bootcamp,
     });
   } catch (err) {
-    res.status(400).json({ success: false, error: err });
+    next(err);
   }
 };
 
@@ -85,9 +91,14 @@ export const updateBootcamp = async (req, res, next) => {
  */
 export const deleteBootcamp = async (req, res, next) => {
   try {
-    await Bootcamp.findByIdAndDelete(req.params.id);
-    res.status(200).json({ success: true, msg: "Data has been deleted" });
+    const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+
+    if (!bootcamp) {
+      return next(
+        new ErrorResponse(`The bootcamp not found wiht id ${req.params.id}`)
+      );
+    }
   } catch (err) {
-    res.status(400).json({ success: false, error: err });
+    next(err);
   }
 };
