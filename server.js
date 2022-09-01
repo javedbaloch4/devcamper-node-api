@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import bootcamps from "./routes/bootcamp.js";
 import morgan from "morgan";
 import { DBConnect } from "./config/db.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -20,6 +21,11 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount routes
 app.use("/api/v1/bootcamps", bootcamps);
+
+/**
+ * todo: What if we add it above the routes.
+ */
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

@@ -28,3 +28,6 @@ Setup Postman Environment
     - Add Present for JSON Type for create route
 
 - ✨Magic ✨
+
+Kill Port or multiple ports
+`npx kill-port 3000 8000 8001`
