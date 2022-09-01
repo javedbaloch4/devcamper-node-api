@@ -31,3 +31,7 @@ Setup Postman Environment
 
 Kill Port or multiple ports
 `npx kill-port 3000 8000 8001`
+
+More on Mac/Linux
+`$ lsof -i tcp:5000`
+`$ kill -9 PID`
