@@ -5,14 +5,26 @@ export const errorHandler = (err, req, res, next) => {
 
   error.message = err.message;
   // for development show errors in console.
-  console.log(err.stack.red);
 
+  // Mongoose not found 
   if (err.name === "CastError") {
     const message = `Bootcamp not found with id ${err.value}`;
     error = new ErrorResponse(message, 404);
   }
 
-  res.status(err.statusCode || 500).json({
+  // Mongoose duplicate entry
+  if (err.code === 11000) {
+    const message = `Duplicate field entered`;
+    error = new ErrorResponse(message, 400  )
+  }
+
+  // Validation error
+  if (err.name === "ValidationError") {
+    const message = Object.values(err.errors).map(val => val.message)
+    error = new ErrorResponse(message, 400)
+  }
+
+  res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || "Server error",
   });

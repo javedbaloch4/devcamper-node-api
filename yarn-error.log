@@ -1,0 +1,65 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn install
+
+PATH: 
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  14.20.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/colors: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141517:19)
+      at Object.onceWrapper (events.js:519:28)
+      at ClientRequest.emit (events.js:400:28)
+      at TLSSocket.emitRequestTimeout (_http_client.js:790:9)
+      at Object.onceWrapper (events.js:519:28)
+      at TLSSocket.emit (events.js:412:35)
+      at TLSSocket.Socket._onTimeout (net.js:495:8)
+      at listOnTimeout (internal/timers.js:557:17)
+      at processTimers (internal/timers.js:500:7)
+
+npm manifest: 
+  {
+    "name": "devcamper-node-api",
+    "version": "1.0.0",
+    "description": "NodeJS API",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+      "start": "NODE_ENV=production node server",
+      "dev": "nodemon server"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/javedbaloch4/devcamper-node-api.git"
+    },
+    "author": "Javed Baloch",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/javedbaloch4/devcamper-node-api/issues"
+    },
+    "homepage": "https://github.com/javedbaloch4/devcamper-node-api#readme",
+    "dependencies": {
+      "colors": "^1.4.0",
+      "dotenv": "^16.0.1",
+      "express": "^4.18.1",
+      "mongoose": "^6.5.4",
+      "morgan": "^1.10.0"
+    },
+    "devDependencies": {
+      "nodemon": "^2.0.19"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
