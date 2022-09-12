@@ -1,6 +1,7 @@
 import Bootcamp from "../models/Bootcamp.js";
 import ErrorResponse from "../utils/ErrorResponse.js";
 import asyncHandler from "../middleware/asyncHandler.js"
+import geocoder from "../utils/nodeGeoCoder.js";
 
 /**
  * @desc Get all bootcamps
@@ -69,7 +70,7 @@ export const updateBootcamp = asyncHandler( async (req, res, next) => {
 
 /**
  * @desc Delete a bootcamp
- * @route Delete /api/v1/bootcamp/:id
+ * @route DELETE /api/v1/bootcamp/:id
  * @access Public
  */
 export const deleteBootcamp = asyncHandler( async (req, res, next) => {
@@ -81,4 +82,33 @@ export const deleteBootcamp = asyncHandler( async (req, res, next) => {
       );
     }
     res.status(200).json({ success: true, msg: "Bootcamp has been deleted" })
+});
+
+
+/**
+ * @desc Get bootcamps by radius
+ * @route GET /api/v1/bootcamps/:zipcode/:distance
+ * @access Public
+ */
+
+export const getBootcampsByRadius = asyncHandler ( async (req, res, next) => {
+  const { zipcode, distance } = req.params;
+
+  // Get Lng, Lat from geocoder
+  const loc = await geocoder.geocode(zipcode);
+
+  const lat = loc[0].latitude;
+  const lng = loc[0].longitude;
+
+  // Get the radius
+  const radius = distance / 3963;
+
+  // Get the data with the distance
+  const bootcamps = await Bootcamp.find({
+    location: { 
+      $geoWithin: { $centerSphere: [ [ lng, lat ], radius ] }
+    }
+  })
+
+  res.status(200).json({success: true, count: bootcamps.length , data: bootcamps })
 });
