@@ -6,11 +6,22 @@ import geocoder from "../utils/nodeGeoCoder.js";
 /**
  * @desc Get all bootcamps
  * @route /api/v1/bootcamps
+ * @route /api/v1/bootcamps?averageCost[lte]=10000&location.city=Boston
  * @access Public
  */
 export const getBootcamps = asyncHandler( async (req, res, next) => {
-    const bootcamp = await Bootcamp.find();
-    res.status(200).json({ success: true, data: bootcamp });
+
+  let query;
+
+  let queryStr = JSON.stringify(req.query)
+
+  queryStr = queryStr.replace(/\b(gt|gte|lte|lt|in)\b/g, match => `$${match}`)
+
+  query = Bootcamp.find(JSON.parse(queryStr));
+
+  const bootcamps = await query;
+
+    res.status(200).json({ success: true, count: bootcamps.length, data: bootcamps });
 });
 
 /**
