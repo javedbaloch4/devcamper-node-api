@@ -6,22 +6,49 @@ import geocoder from "../utils/nodeGeoCoder.js";
 /**
  * @desc Get all bootcamps
  * @route /api/v1/bootcamps
- * @route /api/v1/bootcamps?averageCost[lte]=10000&location.city=Boston
  * @access Public
  */
 export const getBootcamps = asyncHandler( async (req, res, next) => {
 
   let query;
 
+  // Deep copy req.query
+  const reqQuery = { ...req.query }
+
+  // Remove fields
+  const removeFields = ['select']
+
+  // Loop to remove fields
+  removeFields.forEach(param => delete reqQuery[param])
+
+  // Stringfy req.query
   let queryStr = JSON.stringify(req.query)
 
+  // Create operators ($gt, $gte, $lt, $lte, $in)
   queryStr = queryStr.replace(/\b(gt|gte|lte|lt|in)\b/g, match => `$${match}`)
 
+  // Finding resources
   query = Bootcamp.find(JSON.parse(queryStr));
 
+
+  // Select fields
+  if (req.query.select) {
+    const fields = req.query.select.split(',').join(' ');
+    query = query.select(fields)
+  }
+
+  // Sort fields
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(',').join(' ')
+    query = query.sort(sortBy)
+  } else {
+    query = query.sort('-createdAt')
+  }
+
+  // Execute the query
   const bootcamps = await query;
 
-    res.status(200).json({ success: true, count: bootcamps.length, data: bootcamps });
+  res.status(200).json({ success: true, count: bootcamps.length, data: bootcamps });
 });
 
 /**
