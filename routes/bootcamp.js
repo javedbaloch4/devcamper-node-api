@@ -5,11 +5,16 @@ import {
   showBootcamp,
   updateBootcamp,
   deleteBootcamp,
-  getBootcampsByRadius
+  getBootcampsByRadius,
 } from "./../controllers/bootcamp.js";
+
+// Inlcude other route resources
+import courseRouter from "./courses.js"
 
 const router = express.Router();
 
+// Re-route into other resources routers
+router.use('/:bootcampId/courses', courseRouter)
 
 router
   .route('/radius/:zipcode/:distance').get(getBootcampsByRadius)

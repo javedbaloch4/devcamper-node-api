@@ -1,9 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
-import bootcamps from "./routes/bootcamp.js";
 import morgan from "morgan";
 import { DBConnect } from "./config/db.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import bootcamps from "./routes/bootcamp.js";
+import courses from "./routes/courses.js";
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -21,6 +22,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount routes
 app.use("/api/v1/bootcamps", bootcamps);
+app.use("/api/v1/courses", courses);
 
 /**
  * Todo: What if we add it above the routes.
