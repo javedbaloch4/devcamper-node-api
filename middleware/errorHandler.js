@@ -8,7 +8,7 @@ export const errorHandler = (err, req, res, next) => {
 
   // Mongoose not found 
   if (err.name === "CastError") {
-    const message = `Bootcamp not found with id ${err.value}`;
+    const message = `Model not found with id ${err.value}`;
     error = new ErrorResponse(message, 404);
   }
 

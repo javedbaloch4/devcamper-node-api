@@ -1,6 +1,7 @@
 import Course from "../models/Course.js";
 import ErrorResponse from "../utils/ErrorResponse.js";
 import asyncHandler from "../middleware/asyncHandler.js";
+import Bootcamp from "../models/Bootcamp.js";
 
 
 /**
@@ -27,5 +28,76 @@ export const getCourses = asyncHandler( async (req, res, next) => {
         success: true, 
         count: courses.length, 
         data: courses
+    })
+})
+
+/**
+ * @desc Show single course
+ * @route /api/v1/courses/:id
+ * @access Public
+ */
+
+export const showCourse = asyncHandler( async (req, res, next) => {
+    const { id } = req.params
+
+    const course = await Course.findById(id);
+
+    return res.status(200).json({
+        success: true,
+        data: course
+    })
+})
+
+
+/**
+ * @desc Add course
+ * @route /api/v1/courses
+ * @access Private
+ */
+export const createCourse = asyncHandler ( async (req, res, next) => {
+    req.body.bootcamp = req.params.bootcampId
+
+    const bootcamp = await Bootcamp.findById(req.params.bootcampId)
+
+    if (!bootcamp) {
+        return next(
+            new ErrorResponse(`The Bootcamp not found wiht id ${req.params.id}`)
+        ); 
+    }
+
+    const course = await Course.create(req.body)
+
+    return res.status(200).json({
+        success: true,
+        msg: "Course has been created"
+    })
+})
+
+
+/**
+ * @desc Update Course
+ * @route /api/v1/courses
+ * @access Private
+ */
+export const updateCourse = asyncHandler( async(req, res, next) => {
+    const course = await Course.updateOne({ _id: req.params.id }, { $set: req.body });
+    
+    if (!course) {
+        return next(
+            new ErrorResponse(`The course not found wiht id ${req.params.id}`)
+        ); 
+    }
+
+    res.status(200).json({
+        success: true,
+        msg: "Course has been updated"
+    })
+})
+
+export const deleteCourse = asyncHandler ( async (req, res, next) => {
+    await Course.deleteOne({_id: req.params.id})
+    res.status(200).json({
+        success: true,
+        msg: "Course has been deleted"
     })
 })
