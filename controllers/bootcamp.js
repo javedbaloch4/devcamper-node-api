@@ -98,7 +98,7 @@ export const createBootcamp = asyncHandler( async (req, res, next) => {
  * @access Public
  */
 export const showBootcamp = asyncHandler( async (req, res, next) => {
-    const bootcamp = await Bootcamp.findById(req.params.id);
+    const bootcamp = await Bootcamp.findById(req.params.id).populate('courses');
     if (!bootcamp) {
       return next(
         new ErrorResponse(`The bootcamp not found wiht id ${req.params.id}`)
