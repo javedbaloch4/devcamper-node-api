@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import fileupload from "express-fileupload"
+import path from "path"
 import { DBConnect } from "./config/db.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import bootcamps from "./routes/bootcamp.js";
@@ -8,6 +10,10 @@ import courses from "./routes/courses.js";
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
+
+// Dirname path
+const __dirname = path.resolve();
+
 
 // Database Connection
 DBConnect();
@@ -20,13 +26,18 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+// File uploading
+app.use(fileupload());
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 // Mount routes
 app.use("/api/v1/bootcamps", bootcamps);
 app.use("/api/v1/courses", courses);
 
-/**
- * Todo: What if we add it above the routes.
- */
+// Use Error handler
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

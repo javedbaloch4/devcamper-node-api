@@ -6,6 +6,7 @@ import {
   updateBootcamp,
   deleteBootcamp,
   getBootcampsByRadius,
+  uploadBootcampPhoto
 } from "./../controllers/bootcamp.js";
 
 // Inlcude other route resources
@@ -18,6 +19,8 @@ router.use('/:bootcampId/courses', courseRouter)
 
 router
   .route('/radius/:zipcode/:distance').get(getBootcampsByRadius)
+
+router.route('/:id/photo').put(uploadBootcampPhoto)
 
 router
   .route("/")
