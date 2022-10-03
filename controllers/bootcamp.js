@@ -214,7 +214,7 @@ export const getBootcampsByRadius = asyncHandler ( async (req, res, next) => {
     return next(new ErrorResponse(`Image size must be less then ${process.env.MAX_UPLOAD_SIZE}`, 500))
   }
 
-  // Create custom file name & Upload image
+  // Create custom file name & upload image
   file.name = `photo_${bootcamp._id}${path.parse(file.name).ext}`;
 
   file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
@@ -222,9 +222,13 @@ export const getBootcampsByRadius = asyncHandler ( async (req, res, next) => {
       console.log(err)
       return next(new ErrorResponse(`Problem with file upload`, 500))
     }
+
+    await Bootcamp.findByIdAndUpdate(req.params.id, { photo: file.name })
+
+    res.status(200).json({
+      success: true,
+      data: file.name
+    })
+
   })
-
-
-
-  res.status(200).json({ success: true, msg: "Bootcamp image has been updated" })
 });
