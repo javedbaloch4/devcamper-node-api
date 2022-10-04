@@ -21,10 +21,7 @@ export const getCourses = asyncHandler( async (req, res, next) => {
     } else {
         res.status(200).json(res.advancedResults)
     } 
-
-    res.status(200).json(res.advancedResults)
 })
-
 
 /**
  * @desc Show single course
@@ -41,7 +38,6 @@ export const showCourse = asyncHandler( async (req, res, next) => {
         data: course
     })
 })
-
 
 /**
  * @desc Add course
@@ -109,8 +105,6 @@ export const deleteCourse = asyncHandler ( async (req, res, next) => {
             new ErrorResponse(`No course with id of ${req.params.id}`)
         )
     }
-
-    // await Course.deleteOne({_id: req.params.id})
 
     await course.remove()
     
