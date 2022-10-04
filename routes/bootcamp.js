@@ -8,6 +8,10 @@ import {
   getBootcampsByRadius,
   uploadBootcampPhoto
 } from "./../controllers/bootcamp.js";
+import Bootcamp from "../models/Bootcamp.js";
+
+
+import advancedResults from "../middleware/advancedResults.js";
 
 // Inlcude other route resources
 import courseRouter from "./courses.js"
@@ -24,13 +28,13 @@ router.route('/:id/photo').put(uploadBootcampPhoto)
 
 router
   .route("/")
-  .get(getBootcamps)
+  .get(advancedResults(Bootcamp, 'courses'),getBootcamps)
   .post(createBootcamp);
 
 router
   .route("/:id")
   .get(showBootcamp)
   .put(updateBootcamp)
-  .delete(deleteBootcamp);
+  .delete(deleteBootcamp); 
 
 export default router;

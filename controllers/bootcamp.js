@@ -10,71 +10,7 @@ import geocoder from "../utils/nodeGeoCoder.js";
  * @access Public
  */
 export const getBootcamps = asyncHandler( async (req, res, next) => {
-
-  let query;
-
-  // Deep copy req.query
-  const reqQuery = { ...req.query }
-
-  // Remove fields
-  const removeFields = ['select','sort','page','limit']
-
-  // Loop to remove fields 
-  removeFields.forEach(param => delete reqQuery[param])
-
-  // Stringfy req.query
-  let queryStr = JSON.stringify(req.query)
-
-  // Create operators ($gt, $gte, $lt, $lte, $in)
-  queryStr = queryStr.replace(/\b(gt|gte|lte|lt|in)\b/g, match => `$${match}`)
-
-  // Finding resources
-  query = Bootcamp.find(JSON.parse(queryStr)).populate('courses');
-
-
-  // Select fields
-  if (req.query.select) {
-    const fields = req.query.select.split(',').join(' ');
-    query = query.select(fields)
-  }
-
-  // Sort fields
-  if (req.query.sort) {
-    const sortBy = req.query.sort.split(',').join(' ')
-    query = query.sort(sortBy)
-  } else {
-    query = query.sort('-createdAt')
-  }
-
-  // Pagination
-  const page = parseInt(req.query.page, 10) || 1
-  const limit = parseInt(req.query.limit, 10) || 25
-  const startIndex = (page - 1) * limit
-  const endIndex = page * limit;
-  const total = await Bootcamp.countDocuments();
-  
-  query = query.skip(startIndex).limit(limit)
-  
-  // Execute the query
-  const bootcamps = await query;
-
-  // Paginate result
-  const pagination = {}
-  if (endIndex < total) {
-    pagination.next = {
-      page: page + 1,
-      limit
-    }
-  }
-
-  if (startIndex > 0) {
-    pagination.prev = {
-      page: page - 1,
-      limit
-    }
-  }
-
-  res.status(200).json({ success: true, count: bootcamps.length, pagination: pagination, data: bootcamps });
+  res.status(200).json(res.advancedResults);
 });
 
 /**
@@ -157,7 +93,6 @@ export const deleteBootcamp = asyncHandler( async (req, res, next) => {
  * @route GET /api/v1/bootcamps/:zipcode/:distance
  * @access Public
  */
-
 export const getBootcampsByRadius = asyncHandler ( async (req, res, next) => {
   const { zipcode, distance } = req.params;
 
