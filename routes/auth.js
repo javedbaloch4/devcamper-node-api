@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router
-  .route('/').post(createUser)
+  .route('/register').post(createUser)
 
 
 
