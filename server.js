@@ -7,13 +7,13 @@ import { DBConnect } from "./config/db.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import bootcamps from "./routes/bootcamp.js";
 import courses from "./routes/courses.js";
+import auth from "./routes/auth.js"
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
 
 // Dirname path
 const __dirname = path.resolve();
-
 
 // Database Connection
 DBConnect();
@@ -32,10 +32,10 @@ app.use(fileupload());
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // Mount routes
 app.use("/api/v1/bootcamps", bootcamps);
 app.use("/api/v1/courses", courses);
+app.use("/api/v1/users", auth);
 
 // Use Error handler
 app.use(errorHandler);
