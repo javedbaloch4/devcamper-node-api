@@ -1,5 +1,4 @@
 import express from "express"
-
 import { 
     getCourses,
     showCourse,
@@ -7,7 +6,7 @@ import {
     updateCourse,
     deleteCourse
 } from "../controllers/courses.js"
-
+import { protect } from "../middleware/auth.js"
 import advancedResults from "../middleware/advancedResults.js"
 import Course from "../models/Course.js"
 
@@ -18,11 +17,11 @@ router.route('/')
             path: 'bootcamp',
             select: 'name description averageCost'
         }), getCourses)
-    .post(createCourse)
+    .post(protect, createCourse)
 
 router.route('/:id')
     .get(showCourse)
-    .put(updateCourse)
-    .delete(deleteCourse)
+    .put(protect, updateCourse)
+    .delete(protect, deleteCourse)
 
 export default router

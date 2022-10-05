@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import fileupload from "express-fileupload"
+import cookieParser from "cookie-parser"
 import path from "path"
 import { DBConnect } from "./config/db.js";
 import { errorHandler } from "./middleware/errorHandler.js";
@@ -20,7 +21,11 @@ DBConnect();
 
 const app = express();
 
+// Body parser
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser())
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

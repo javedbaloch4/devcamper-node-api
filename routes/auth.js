@@ -1,7 +1,6 @@
-import e from "express";
 import express from "express"
-
-import { createUser, login } from "../controllers/auth.js" 
+import { createUser, login, getMe } from "../controllers/auth.js" 
+import { protect } from "../middleware/auth.js"
 
 const router = express.Router();
 
@@ -11,6 +10,9 @@ router
 
 router
   .route('/login').post(login)
+
+router
+  .route('/me').get(protect, getMe)
 
 
 export default router;

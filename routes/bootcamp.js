@@ -9,6 +9,7 @@ import {
   uploadBootcampPhoto
 } from "./../controllers/bootcamp.js";
 import Bootcamp from "../models/Bootcamp.js";
+import { protect } from "../middleware/auth.js"
 
 
 import advancedResults from "../middleware/advancedResults.js";
@@ -16,7 +17,7 @@ import advancedResults from "../middleware/advancedResults.js";
 // Inlcude other route resources
 import courseRouter from "./courses.js"
 
-const router = express.Router();
+const router = express.Router();  
 
 // Re-route into other resources routers
 router.use('/:bootcampId/courses', courseRouter)
@@ -24,17 +25,17 @@ router.use('/:bootcampId/courses', courseRouter)
 router
   .route('/radius/:zipcode/:distance').get(getBootcampsByRadius)
 
-router.route('/:id/photo').put(uploadBootcampPhoto)
+router.route('/:id/photo').put(protect, uploadBootcampPhoto)
 
 router
   .route("/")
   .get(advancedResults(Bootcamp, 'courses'),getBootcamps)
-  .post(createBootcamp);
+  .post(protect, createBootcamp);
 
 router
   .route("/:id")
   .get(showBootcamp)
-  .put(updateBootcamp)
-  .delete(deleteBootcamp); 
+  .put(protect, updateBootcamp)
+  .delete(protect, deleteBootcamp); 
 
 export default router;
