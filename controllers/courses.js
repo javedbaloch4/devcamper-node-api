@@ -85,15 +85,15 @@ export const updateCourse = asyncHandler( async(req, res, next) => {
 
     let course = await Course.findById(req.params.id)
 
-    // Make sure the user is course owner
-    if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
-        return next(new ErrorResponse(`User ${req.user.id} is not authorized to update the course ${course._id}`, 401))
-    }
-
     if (!course) {
         return next(
             new ErrorResponse(`The course not found wiht id ${req.params.id}`)
         ); 
+    }
+
+    // Make sure the user is course owner
+    if (course.user.toString() !== req.user.id && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User ${req.user.id} is not authorized to update the course ${course._id}`, 401))
     }
 
 
