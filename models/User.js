@@ -41,11 +41,16 @@ UserSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, salt) 
 })
 
-// Get JWT 
+// Get JWT Token 
 UserSchema.methods.getSignedJwtToken = function() {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES
     })
+}
+
+// Compare password
+UserSchema.methods.matchPassword = async function(password) {
+    return await bcrypt.compare(password, this.password)
 }
 
 export default mongoose.model('User', UserSchema)

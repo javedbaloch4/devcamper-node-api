@@ -21,6 +21,9 @@ export const getBootcamps = asyncHandler( async (req, res, next) => {
 export const createBootcamp = asyncHandler( async (req, res, next) => {
     const bootcamp = await Bootcamp.create(req.body);
 
+    /**
+     * Todo: Bug here in middleware next is required.
+     */
     if (!bootcamp) {
       return new ErrorResponse('Failed to create bootcamp', 400)
     }
