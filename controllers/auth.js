@@ -52,8 +52,8 @@ export const createUser = asyncHandler( async (req, res, next) => {
         return next(new ErrorResponse('Invalid credientials', 400))
     }
 
-  // return token
-  sendTokenResponse(user, 200, res);
+    // return token
+    sendTokenResponse(user, 200, res);
 })
 
 // Get token from model, create cookie and send response
@@ -84,7 +84,6 @@ const sendTokenResponse = (user, statusCode, res) => {
  * @access Private
 */
 export const getMe = asyncHandler( async(req, res, next) => {
-
   const user = await User.findById(req.user.id)
 
   res.status(200).json({

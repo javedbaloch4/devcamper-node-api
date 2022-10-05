@@ -19,17 +19,29 @@ export const getBootcamps = asyncHandler( async (req, res, next) => {
  * @access Public
  */
 export const createBootcamp = asyncHandler( async (req, res, next) => {
+    // Add user in req 
+    req.body.user = req.user.id
+
+    // Check if bootcamp is published
+    const publishedBootcamp = await Bootcamp.findOne({ user: req.user.id })
+
+    // Check if already created Bootcamp
+    if (publishedBootcamp && req.user.role !== 'admin') {
+      return next(
+        new ErrorResponse(`The role ${req.user.role} has already published Bootcamp`)
+      );
+    }
+
     const bootcamp = await Bootcamp.create(req.body);
 
     /**
      * Todo: Bug here in middleware next is required.
      */
-    if (!bootcamp) {
+    if (!bootcamp) { 
       return new ErrorResponse('Failed to create bootcamp', 400)
     }
 
-    res.status(200).json({ success: true, msg: "Bootcamp has been created." });
-  
+    res.status(200).json({ success: true, msg: "Bootcamp has been created.", publishedBootcamp });
 });
 
 /**
