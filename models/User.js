@@ -48,6 +48,14 @@ UserSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, salt) 
 })
 
+// Encrypt password using bcrypt while updating (admin)
+UserSchema.pre("findOneAndUpdate", async function (next) {
+    if (this._update.password) {
+      this._update.password = await bcrypt.hash(this._update.password, 10);
+    }
+    next();
+  });
+
 // Sign JWT Token and return
 UserSchema.methods.getSignedJwtToken = function() {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
@@ -79,5 +87,4 @@ UserSchema.methods.getResetPasswordToken = function () {
     return resetToken;
 };
   
-
 export default mongoose.model('User', UserSchema)

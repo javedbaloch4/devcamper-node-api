@@ -9,6 +9,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import bootcamps from "./routes/bootcamp.js";
 import courses from "./routes/courses.js";
 import auth from "./routes/auth.js"
+import user from "./routes/user.js"
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -41,6 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/api/v1/bootcamps", bootcamps);
 app.use("/api/v1/courses", courses);
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/users", user);
 
 // Use Error handler
 app.use(errorHandler);

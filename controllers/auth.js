@@ -72,6 +72,52 @@ export const getMe = asyncHandler( async(req, res, next) => {
 })
 
 /**
+ * @desc Update user details
+ * @route POST /api/v1/updatedetails
+ * @access Private
+*/
+export const updateDetails = asyncHandler( async(req, res, next) => {
+
+  const fieldToUpdate = {
+    name: req.body.name,
+    email: req.body.email,
+  }
+
+  const user = await User.findByIdAndUpdate(req.user.id, fieldToUpdate, {
+    new: true,
+    runValidators: true
+  })
+
+  res.status(200).json({
+    success: true,
+    user
+  })
+})
+
+/**
+ * @desc Update user password
+ * @route POST /api/v1/updatepassword
+ * @access Private
+*/
+export const UpdatePassword = asyncHandler( async(req, res, next) => {
+  // Find the old passowrd
+  const user = await User.findById(req.user.id).select('+password')
+
+  if (!(await user.matchPassword(req.body.currentPassword))) {
+    return next(new ErrorResponse('Password is incorrect', 401))
+  }
+
+  user.password = req.body.newPassword;
+
+  await user.save()
+  
+   // return token
+   sendTokenResponse(user, 200, res);
+})
+
+
+
+/**
  * @desc Reset Password
  * @route PUT /api/v1/auth/resetpassword/:resettoken
  * @access Public 
@@ -119,7 +165,7 @@ export const forgetPassword = asyncHandler( async(req, res, next) => {
   }
 
   // Get reset token
-  const resetToken = user.getResetPasswordToken();
+  const resetToken = user.resetPasswordToken();
 
   console.log('Forget password', resetToken)
 
