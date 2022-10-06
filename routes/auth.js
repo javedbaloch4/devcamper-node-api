@@ -1,5 +1,5 @@
 import express from "express"
-import { createUser, login, getMe, forgetPassword } from "../controllers/auth.js" 
+import { createUser, login, getMe, forgetPassword, resetPassword } from "../controllers/auth.js" 
 import { protect } from "../middleware/auth.js"
 
 const router = express.Router();
@@ -16,6 +16,9 @@ router
 
 router
   .route('/forgetpassword').post(forgetPassword)
+
+router 
+  .route('/resetpassword/:resettoken').put(resetPassword)
 
 
 export default router;
