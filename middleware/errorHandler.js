@@ -8,7 +8,7 @@ export const errorHandler = (err, req, res, next) => {
 
   // Mongoose not found 
   if (err.name === "CastError") {
-    const message = `Model not found with id ${err.value}`;
+    const message = `Resource not found with id ${err.value}`;
     error = new ErrorResponse(message, 404);
   }
 
@@ -25,7 +25,7 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   res.status(error.statusCode || 500).json({
-    success: false,
+    success: false, 
     error: error.message || "Server error",
   });
 };
