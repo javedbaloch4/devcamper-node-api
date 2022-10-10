@@ -13,7 +13,8 @@ import user from "./routes/user.js"
 import reviews from "./routes/reviews.js"
 import cors from 'cors'
 import mongoSanitize from "express-mongo-sanitize"
-
+import helmet from "helmet"
+import xss from "xss-clean"
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -37,6 +38,12 @@ app.use(cookieParser())
 
 // To remove data using these defaults:
 app.use(mongoSanitize());
+
+// Set security headers
+app.use(helmet())
+
+// Prevent XSS attacks
+app.use(xss())
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

@@ -41,7 +41,7 @@ export const createBootcamp = asyncHandler( async (req, res, next) => {
       return new ErrorResponse('Failed to create bootcamp', 400)
     }
 
-    res.status(200).json({ success: true, msg: "Bootcamp has been created.", publishedBootcamp });
+    res.status(200).json({ success: true, msg: "Bootcamp has been created.", bootcamp });
 });
 
 /**
