@@ -30,7 +30,7 @@ export const createUser = asyncHandler( async (req, res, next) => {
  * @access Public
  */
  export const login = asyncHandler( async (req, res, next) => {
-
+  console.log("Callled");
     const { email, password } = req.body
 
     // Validate the user
@@ -115,8 +115,6 @@ export const UpdatePassword = asyncHandler( async(req, res, next) => {
    sendTokenResponse(user, 200, res);
 })
 
-
-
 /**
  * @desc Reset Password
  * @route PUT /api/v1/auth/resetpassword/:resettoken
@@ -195,6 +193,23 @@ export const forgetPassword = asyncHandler( async(req, res, next) => {
     data: 'Email sent.'
   })
 })
+
+/**
+ * @desc Log the user out / clear the cookie.
+ * @route GET /api/v1/auth/logout
+ * @access Private
+*/
+export const logout = asyncHandler(async (req, res, next) => {
+
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
 
 
 // Get token from model, create cookie and send response

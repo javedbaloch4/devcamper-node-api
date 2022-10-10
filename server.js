@@ -11,7 +11,7 @@ import courses from "./routes/courses.js";
 import auth from "./routes/auth.js"
 import user from "./routes/user.js"
 import reviews from "./routes/reviews.js"
-
+import cors from 'cors'
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
 
@@ -25,7 +25,7 @@ const app = express();
 
 // Body parser
 app.use(express.json());
-
+app.use(cors())
 // Cookie parser
 app.use(cookieParser())
 
