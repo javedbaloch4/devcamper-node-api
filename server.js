@@ -12,6 +12,9 @@ import auth from "./routes/auth.js"
 import user from "./routes/user.js"
 import reviews from "./routes/reviews.js"
 import cors from 'cors'
+import mongoSanitize from "express-mongo-sanitize"
+
+
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
 
@@ -25,9 +28,15 @@ const app = express();
 
 // Body parser
 app.use(express.json());
+
+// Using cors
 app.use(cors())
+
 // Cookie parser
 app.use(cookieParser())
+
+// To remove data using these defaults:
+app.use(mongoSanitize());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

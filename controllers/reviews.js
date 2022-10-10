@@ -75,7 +75,6 @@ export const createReview = asyncHandler( async (req, res, next) => {
     })
 });
 
-
 /**
  * @desc Update the review
  * @route PUT /api/v1/reviews/:id
