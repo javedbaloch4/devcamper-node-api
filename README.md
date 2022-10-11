@@ -27,6 +27,10 @@ Setup Postman Environment
   - Additional Things
     - Add Present for JSON Type for create route
 
+## API Documentation
+https://documenter.getpostman.com/view/13559740/2s83zjsiQg
+
+
 - ✨Magic ✨
 
 ## More on Mac/Linux
