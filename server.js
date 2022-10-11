@@ -15,6 +15,8 @@ import cors from 'cors'
 import mongoSanitize from "express-mongo-sanitize"
 import helmet from "helmet"
 import xss from "xss-clean"
+import rateLimit from 'express-rate-limit'
+
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -45,6 +47,15 @@ app.use(helmet())
 // Prevent XSS attacks
 app.use(xss())
 
+// Rate limiter (50 req per 10 minutes)
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 1000
+})
+
+app.use(limiter)
+
+// Check the NODE env
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
