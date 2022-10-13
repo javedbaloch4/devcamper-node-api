@@ -27,6 +27,12 @@ Setup Postman Environment
   - Additional Things
     - Add Present for JSON Type for create route
 
+
+  - Dockers
+    - DOCKER FILE - Blue print to build dokcer image
+    - IMAGE - Template for running Docker containers
+    - CONTAINER - Container is a running process
+
 ## API Documentation
 https://documenter.getpostman.com/view/13559740/2s83zjsiQg
 
